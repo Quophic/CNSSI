@@ -1,11 +1,10 @@
-import java.applet.Applet;
 import java.awt.*;
 // import java.awt.Event;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 
-public class MessageSwitching extends JPanel implements Runnable, ActionListener {
+public class MessageSwitching extends JPanel implements Runnable, ActionListener, ItemListener {
     int data_size_input = 12;
 
     int packet_size_input = 4;
@@ -169,9 +168,13 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
         this.input.add(this.l_simu_fast);
         this.input.add(this.l_blank);
         this.input.add(this.m_start);
+        this.m_start.addActionListener(this);
         this.input.add(this.m_pause);
+        this.m_pause.addActionListener(this);
         this.input.add(this.m_resume);
+        this.m_resume.addActionListener(this);
         this.input.add(this.m_stop);
+        this.m_stop.addActionListener(this);
         this.m_pause.setEnabled(false);
         this.m_resume.setEnabled(false);
         this.m_stop.setEnabled(false);
@@ -242,40 +245,6 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e){
-        action(e, null);
-    }
-
-    public boolean action(ActionEvent e, Object arg) {
-        if (e.getSource() == this.graphical) {
-            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
-            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
-            return true;
-        }
-        if (e.getSource() == this.textual) {
-            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
-            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
-            return true;
-        }
-        if (e.getSource() == this.cbo_data_size) {
-            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
-            return true;
-        }
-        if (e.getSource() == this.cbo_packet_size) {
-            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
-            return true;
-        }
-        if (e.getSource() == this.chk_prop_delay_L1) {
-            this.prop_delay_L1 = this.chk_prop_delay_L1.getState();
-            return true;
-        }
-        if (e.getSource() == this.chk_prop_delay_L2) {
-            this.prop_delay_L2 = this.chk_prop_delay_L2.getState();
-            return true;
-        }
-        if (e.getSource() == this.chk_prop_delay_L3) {
-            this.prop_delay_L3 = this.chk_prop_delay_L3.getState();
-            return true;
-        }
         if (e.getSource() == this.m_pause) {
             this.m_start.setEnabled(false);
             this.m_pause.setEnabled(false);
@@ -289,7 +258,6 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
             } catch (Exception error) {
                 error.printStackTrace();
             }
-            return true;
         }
         if (e.getSource() == this.m_resume) {
             this.m_start.setEnabled(false);
@@ -298,7 +266,6 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
             this.m_stop.setEnabled(true);
             // this.m_MessageSwitching.resume();
             this.m_MessageSwitching.notify();
-            return true;
         }
         if (e.getSource() == this.m_stop) {
             enableControls();
@@ -308,7 +275,6 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
             this.m_stop.setEnabled(false);
             // this.m_MessageSwitching.stop();
             this.m_MessageSwitching.interrupt();
-            return true;
         }
         if (e.getSource() == this.m_start) {
             disableControls();
@@ -343,9 +309,34 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
                 this.m_MessageSwitching = new Thread(this);
                 this.m_MessageSwitching.start();
             }
-            return true;
         }
-        return false;
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e){
+        if (e.getItemSelectable() == this.graphical) {
+            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
+            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
+        }
+        if (e.getItemSelectable() == this.textual) {
+            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
+            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
+        }
+        if (e.getItemSelectable() == this.cbo_data_size) {
+            this.data_size_input = Integer.parseInt(this.cbo_data_size.getSelectedItem());
+        }
+        if (e.getItemSelectable() == this.cbo_packet_size) {
+            this.packet_size_input = Integer.parseInt(this.cbo_packet_size.getSelectedItem());
+        }
+        if (e.getItemSelectable() == this.chk_prop_delay_L1) {
+            this.prop_delay_L1 = this.chk_prop_delay_L1.getState();
+        }
+        if (e.getItemSelectable() == this.chk_prop_delay_L2) {
+            this.prop_delay_L2 = this.chk_prop_delay_L2.getState();
+        }
+        if (e.getItemSelectable() == this.chk_prop_delay_L3) {
+            this.prop_delay_L3 = this.chk_prop_delay_L3.getState();
+        }
     }
 
     public void disableControls() {
