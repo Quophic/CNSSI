@@ -160,8 +160,11 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
         this.input.add(this.l_set_ms_in_ps);
         this.input.add(this.l_prop_delay);
         this.input.add(this.chk_prop_delay_L1);
+        this.chk_prop_delay_L1.addItemListener(this);
         this.input.add(this.chk_prop_delay_L2);
+        this.chk_prop_delay_L2.addItemListener(this);
         this.input.add(this.chk_prop_delay_L3);
+        this.chk_prop_delay_L3.addItemListener(this);
         this.input.add(this.l_simu_speed);
         this.input.add(this.l_simu_slow);
         this.input.add(this.sco_simu_speed);
@@ -241,6 +244,7 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
         for (int i = 1; i < size + 1; i++)
             ch.addItem(Integer.toString(i));
         ch.select(optimal);
+        ch.addItemListener(this); // 添加侦听器
     }
 
     @Override
@@ -252,9 +256,9 @@ public class MessageSwitching extends JPanel implements Runnable, ActionListener
             this.m_stop.setEnabled(false);
             // this.m_MessageSwitching.suspend();
             try {
-                // synchronized(this.m_MessageSwitching){
+                synchronized(this.m_MessageSwitching){
                     this.m_MessageSwitching.wait();
-                // }
+                }
             } catch (Exception error) {
                 error.printStackTrace();
             }

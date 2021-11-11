@@ -9,7 +9,7 @@ public class Entry extends JFrame {
     public Entry(){
         setVisible(true);
         setLocation(200, 100);
-        setSize(560, 465);
+        setSize(560, 490);
         add(new MessageSwitching());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
