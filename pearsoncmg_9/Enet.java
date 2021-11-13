@@ -218,7 +218,7 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
             this.Start.setEnabled(false);
             this.Stop.setEnabled(true);
             this.Pause.setEnabled(true);
-            for (byte b1 = 0; b1 < 3; b1++)
+            for (int  b1 = 0; b1 < 3; b1++)
                 this.network.Stations[b1] = new Station(b1, this.network.Stations);
             this.runner = new AnimateTimer(this, 100);
             this.runner.start();
@@ -233,10 +233,11 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
             this.Pause.setEnabled(false);
             this.Resume.setEnabled(false);
             this.runner.stop();
-            for (byte b1 = 0; b1 < 3; b1++)
+            for (int  b1 = 0; b1 < 3; b1++)
                 this.network.Stations[b1] = null;
             this.network.timer_started = false;
             this.network.timer = 0.0D;
+            this.m_kOffScreenGraphics.clearRect(0, 0, 1000, 1000);
         }
         if (e.getSource() == this.Pause) {
             this.Pause.setEnabled(false);
@@ -264,19 +265,17 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        byte b;
         // 计算点击时鼠标在窗口中的绝对位置
         int x = e.getXOnScreen() - getLocationOnScreen().x;
         int y = e.getYOnScreen() - getLocationOnScreen().y;
-        System.out.println(x + " : " + y);
-        for (b = 0; b < 3; b++) {
+        for (int b = 0; b < 3; b++) {
             if (this.network.Stations[b] != null && this.network.Stations[b].onClick(x, y))
                 this.network.timer_started = true;
         }
     }
 
 //     public boolean handleEvent(Event paramEvent) {
-//         byte b;
+//         int  b;
 //         switch (paramEvent.id) {
 //         case 1001:
 //             if (paramEvent.target == this.Start) {
@@ -289,7 +288,7 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
 //                 this.Start.setEnabled(false);
 //                 this.Stop.setEnabled(true);
 //                 this.Pause.setEnabled(true);
-//                 for (byte b1 = 0; b1 < 3; b1++)
+//                 for (int  b1 = 0; b1 < 3; b1++)
 //                     this.network.Stations[b1] = new Station(b1, this.network.Stations);
 //                 this.runner = new AnimateTimer(this, 100);
 //                 this.runner.start();
@@ -303,7 +302,7 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
 //                 this.Pause.setEnabled(false);
 //                 this.Resume.setEnabled(false);
 //                 this.runner.stop();
-//                 for (byte b1 = 0; b1 < 3; b1++)
+//                 for (int  b1 = 0; b1 < 3; b1++)
 //                     this.network.Stations[b1] = null;
 //                 this.network.timer_started = false;
 //                 this.network.timer = 0.0D;
@@ -358,12 +357,12 @@ class NetCanvas extends Canvas {
         this.timer_started = false;
         setBackground(Color.white);
         this.Stations = new Station[3];
-        for (byte b = 0; b < 3; b++)
+        for (int  b = 0; b < 3; b++)
             this.Stations[b] = null;
     }
 
     public void drawStations(Graphics paramGraphics) {
-        for (byte b = 0; b < 3; b++) {
+        for (int  b = 0; b < 3; b++) {
             Integer integer = b + 1;    // 这样好像没什么问题
             switch (b + 1) {
             case 1:
@@ -391,12 +390,14 @@ class NetCanvas extends Canvas {
     public void paint(Graphics paramGraphics) {
         paramGraphics.drawString("Time", 10, 140);
         paramGraphics.drawString("(microseconds)", 10, 150);
+        paramGraphics.setColor(Color.white);
+        paramGraphics.fillRect(10, 150, 20, 10); // 在显示下一组数字之前把原来的清理掉
         paramGraphics.setColor(Color.red);
         paramGraphics.drawString(String.valueOf((int) Math.floor(this.timer)), 10, 160);
         paramGraphics.setColor(Color.black);
         if (this.timer_started)
             this.timer += 0.25D;
-        for (byte b = 0; b < 3; b++) {
+        for (int  b = 0; b < 3; b++) {
             if (this.Stations[b] != null) {
                 this.Stations[b].Update(paramGraphics);
                 this.Stations[b].Draw(paramGraphics);
@@ -464,12 +465,13 @@ class EnetFrame {
         (this.packets[0]).first = true;
         if (this.length == 1)
             (this.packets[0]).last = true;
-        for (byte b = 1; b < this.length; b++)
+        // for (int  b = 1; b < this.length; b++) int  与 int 类型作比较会报错 其范围为-128至127
+        for (int b = 1; b < this.length; b++)
             this.packets[b] = null;
     }
 
     void Draw(Graphics paramGraphics) {
-        for (byte b = 0; b < this.length; b++) {
+        for (int  b = 0; b < this.length; b++) {
             if (this.packets[b] != null) {
                 switch (this.ID) {
                 case 0:
@@ -502,7 +504,7 @@ class EnetFrame {
 
     boolean Update() {
         boolean bool = false;
-        for (byte b = 0; b < this.length; b++) {
+        for (int  b = 0; b < this.length; b++) {
             if (this.packets[b] != null) {
                 if (this.packets[b].Update()) {
                     bool = true;
