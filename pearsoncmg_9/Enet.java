@@ -1,9 +1,7 @@
-import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Choice;
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,7 +10,6 @@ import java.awt.Panel;
 import java.awt.event.*;
 import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
-
 import java.awt.Component;
 import java.awt.Canvas;
 
@@ -182,12 +179,6 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
         addMouseListener(this);
     }
 
-    // Applet 类，浏览器调用的函数
-    // public void destroy() {
-    // if (this.runner != null)
-    // this.runner.stop();
-    // }
-
     public void update(Graphics paramGraphics) {
         if (this.m_kOffScreenImage == null || this.m_bResized) {
             this.m_kOffScreenImage = createImage(getSize().width, getSize().height);
@@ -274,60 +265,6 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
                 this.network.timer_started = true;
         }
     }
-
-//     public boolean handleEvent(Event paramEvent) {
-//         int  b;
-//         switch (paramEvent.id) {
-//         case 1001:
-//             if (paramEvent.target == this.Start) {
-//                 Constants.CableLength = Integer.parseInt(this.Length.getSelectedItem());
-//                 Constants.TransmissionRate = Integer.parseInt(this.Rate.getSelectedItem());
-//                 Constants.FrameSize = Integer.parseInt(this.Size.getSelectedItem());
-//                 this.Length.setEnabled(false);
-//                 this.Rate.setEnabled(false);
-//                 this.Size.setEnabled(false);
-//                 this.Start.setEnabled(false);
-//                 this.Stop.setEnabled(true);
-//                 this.Pause.setEnabled(true);
-//                 for (int  b1 = 0; b1 < 3; b1++)
-//                     this.network.Stations[b1] = new Station(b1, this.network.Stations);
-//                 this.runner = new AnimateTimer(this, 100);
-//                 this.runner.start();
-//             }
-//             if (paramEvent.target == this.Stop) {
-//                 this.Length.setEnabled(true);
-//                 this.Rate.setEnabled(true);
-//                 this.Size.setEnabled(true);
-//                 this.Start.setEnabled(true);
-//                 this.Stop.setEnabled(false);
-//                 this.Pause.setEnabled(false);
-//                 this.Resume.setEnabled(false);
-//                 this.runner.stop();
-//                 for (int  b1 = 0; b1 < 3; b1++)
-//                     this.network.Stations[b1] = null;
-//                 this.network.timer_started = false;
-//                 this.network.timer = 0.0D;
-//             }
-//             if (paramEvent.target == this.Pause) {
-//                 this.Pause.setEnabled(false);
-//                 this.Resume.setEnabled(true);
-//                 this.runner.Pause();
-//             }
-//             if (paramEvent.target == this.Resume) {
-//                 this.Pause.setEnabled(true);
-//                 this.Resume.setEnabled(false);
-//                 this.runner.Resume();
-//             }
-//             return true;
-//         case 501:
-//             for (b = 0; b < 3; b++) {
-//                 if (this.network.Stations[b] != null && this.network.Stations[b].onClick(paramEvent.x, paramEvent.y))
-//                     this.network.timer_started = true;
-//             }
-//             return true;
-//         }
-//         return false;
-//     }
 }
 
 class Constants {
