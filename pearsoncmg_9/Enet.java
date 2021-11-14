@@ -203,6 +203,7 @@ public class Enet extends JPanel implements ActionListener, MouseListener {
     }
 
     public void paint(Graphics paramGraphics) {
+        super.paint(paramGraphics);     // 在重写 paint 方法时要调用原来的 paint 方法，否则不会清理之前的内容
         this.network.paint(paramGraphics);
     }
 
@@ -390,8 +391,6 @@ class NetCanvas extends Canvas {
     public void paint(Graphics paramGraphics) {
         paramGraphics.drawString("Time", 10, 140);
         paramGraphics.drawString("(microseconds)", 10, 150);
-        paramGraphics.setColor(Color.white);
-        paramGraphics.fillRect(10, 150, 20, 10); // 在显示下一组数字之前把原来的清理掉
         paramGraphics.setColor(Color.red);
         paramGraphics.drawString(String.valueOf((int) Math.floor(this.timer)), 10, 160);
         paramGraphics.setColor(Color.black);
